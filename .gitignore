@@ -1,0 +1,8 @@
+env
+bin
+include
+lib
+*.pyc
+lib-python
+lib_pypy
+site-packages
