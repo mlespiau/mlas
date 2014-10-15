@@ -151,7 +151,7 @@ while(bestBicScore > 0 and len(gmmList) > 1):
         for j in range(i + 1, len(clustersNames)):
             gmmTwoClusterName = clustersNames[j]
             print 'gmmOneClusterName: ' + str(gmmOneClusterName) + '. gmmTwoClusterName: ' + str(gmmTwoClusterName)
-            score = 0.0
+            newScore = 0.0
             clusterOne = clusters[gmmOneClusterName]
             clusterTwo = clusters[gmmTwoClusterName]
             newClusterData = numpy.concatenate((clusterOne.getData(), clusterTwo.getData()))
@@ -171,11 +171,11 @@ while(bestBicScore > 0 and len(gmmList) > 1):
             # Esto podria ser fruta
             newScore = newGmm.bic(newClusterData) - clusterOne.bic() + clusterTwo.bic()
             print(newScore)
-            if (score > bestBicScore):
+            if (newScore > bestBicScore):
                 bestMergedGmm = newGmm
                 mergedTuple = (clusterOne, clusterTwo)
                 mergedTupleIndices = (gmmOneClusterName, gmmTwoClusterName)
-                bestBicScore = score
+                bestBicScore = newScore
     if bestBicScore > 0.0:
         gmmList.__delitem__(mergedTupleIndices[0])
         gmmList.__delitem__(mergedTupleIndices[1])
