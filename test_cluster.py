@@ -8,8 +8,8 @@ from sklearn.mixture import GMM
 # TODO: averiguar como funciona esto
 import scipy.stats.mstats as stats
 
-(rate,signal) = wavfile.read("corpus/telam-51aniosrayuela_part1.wav")
 # TODO: add wiener filtering to the signal!
+(rate,signal) = wavfile.read("corpus/telam-51aniosrayuela_part1.wav")
 
 class Cluster():
     def __init__(self, gmm, data):
