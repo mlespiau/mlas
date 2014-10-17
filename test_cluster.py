@@ -22,7 +22,7 @@ class Cluster():
         # TODO: relevant code: max_em_iters=em_iters in gmm training
         self.gmm.fit(self.data)
 
-    def getGmm():
+    def getGmm(self):
         return self.gmm
 
 class Segment():
@@ -83,7 +83,7 @@ class Resegmenter():
                 segment = self.reSegmentedClusters[mostLikelyGmmClass]
                 segment.addData(currentSegmentData)
             else:
-                segment = Segment(self.cluster_list[mostLikelyGmmClass], mostLikelyGmmClass, currentSegmentData)
+                segment = Segment(self.cluster_list[mostLikelyGmmClass].getGmm(), mostLikelyGmmClass, currentSegmentData)
                 self.reSegmentedClusters[mostLikelyGmmClass] = segment
         # for each gmm, append all the segments and retrain
         # hay que verificar si lo que esta haciendo es justar en cluster_data
@@ -103,7 +103,6 @@ class Resegmenter():
 numberOfCluster = 16
 
 X = mfcc(signal, samplerate=rate)
-print(X.shape)
 N = X.shape[0]
 D = X.shape[1]
 
@@ -113,13 +112,11 @@ gaussianComponents = 5
 
 cluster_list = []
 dataSplits = numpy.vsplit(X, range(rowsPerCluster, N, rowsPerCluster))
-gmmList = []
 
 # train a GMM in each cluster
 for data in dataSplits:
     print 'Training GMM'
     gmm = GMM(n_components=gaussianComponents)
-    gmmList.append(gmm)
     cluster_list.append(Cluster(gmm, data))
     print 'Done!'
 
@@ -135,7 +132,7 @@ for iterationNumber in range(0, NUMBER_INITIAL_SEGMENTATION_LOOPS):
 
 # agregar getter a resegmenter para los reSegmentedClusters
 bestBicScore = 1.0
-while(bestBicScore > 0 and len(gmmList) > 1):
+while(bestBicScore > 0 and len(cluster_list) > 1):
     resegmenter = Resegmenter(X, N, cluster_list)
     for iterationNumber in range(0, NUMBER_SEGMENTATION_LOOPS):
         resegmenter.execute()
@@ -176,8 +173,14 @@ while(bestBicScore > 0 and len(gmmList) > 1):
                 mergedTuple = (clusterOne, clusterTwo)
                 mergedTupleIndices = (gmmOneClusterName, gmmTwoClusterName)
                 bestBicScore = newScore
+                bestNewClusterData = newClusterData
     if bestBicScore > 0.0:
-        gmmList.__delitem__(mergedTupleIndices[0])
-        gmmList.__delitem__(mergedTupleIndices[1])
-        gmmList[mergedTupleIndices[0]] = bestMergedGmm
-    print(gmmList)
+        print(mergedTupleIndices)
+        print(cluster_list)
+        if mergedTupleIndices[0] < mergedTupleIndices[1]:
+            cluster_list.__delitem__(mergedTupleIndices[1])
+            cluster_list.__delitem__(mergedTupleIndices[0])
+        else:
+            cluster_list.__delitem__(mergedTupleIndices[0])
+            cluster_list.__delitem__(mergedTupleIndices[1])
+        cluster_list[mergedTupleIndices[0]] = Cluster(bestMergedGmm, bestNewClusterData)
