@@ -47,17 +47,17 @@ class Segment():
         return self.gmm.bic(self.data)
 
 class Resegmenter():
-    def __init__(self, X, N, gmmList):
+    def __init__(self, X, N, cluster_list):
         self.X = X
         self.N = N
-        self.gmmList = gmmList
-        self.numberOfClusters = len(self.gmmList)
+        self.cluster_list = cluster_list
+        self.numberOfClusters = len(self.cluster_list)
         self.intervalSize = 200
 
     def execute(self):
-        likelihoods = self.gmmList[0].score(self.X)
-        for gmm in self.gmmList[1:]:
-            likelihoods = numpy.column_stack((likelihoods, gmm.score(self.X)))
+        likelihoods = self.cluster_list[0].getGmm().score(self.X)
+        for cluster in self.cluster_list[1:]:
+            likelihoods = numpy.column_stack((likelihoods, cluster.getGmm().score(self.X)))
         if self.numberOfClusters == 1:
             self.mostLikely = numpy.zeros(len(self.X))
         else:
@@ -83,7 +83,7 @@ class Resegmenter():
                 segment = self.reSegmentedClusters[mostLikelyGmmClass]
                 segment.addData(currentSegmentData)
             else:
-                segment = Segment(self.gmmList[mostLikelyGmmClass], mostLikelyGmmClass, currentSegmentData)
+                segment = Segment(self.cluster_list[mostLikelyGmmClass], mostLikelyGmmClass, currentSegmentData)
                 self.reSegmentedClusters[mostLikelyGmmClass] = segment
         # for each gmm, append all the segments and retrain
         # hay que verificar si lo que esta haciendo es justar en cluster_data
@@ -129,14 +129,14 @@ for cluster in cluster_list:
 NUMBER_INITIAL_SEGMENTATION_LOOPS = 2
 NUMBER_SEGMENTATION_LOOPS = 3
 
-resegmenter = Resegmenter(X, N, gmmList)
+resegmenter = Resegmenter(X, N, cluster_list)
 for iterationNumber in range(0, NUMBER_INITIAL_SEGMENTATION_LOOPS):
     resegmenter.execute()
 
 # agregar getter a resegmenter para los reSegmentedClusters
 bestBicScore = 1.0
 while(bestBicScore > 0 and len(gmmList) > 1):
-    resegmenter = Resegmenter(X, N, gmmList)
+    resegmenter = Resegmenter(X, N, cluster_list)
     for iterationNumber in range(0, NUMBER_SEGMENTATION_LOOPS):
         resegmenter.execute()
     bestMergedGmm = None
