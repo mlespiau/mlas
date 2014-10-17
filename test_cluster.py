@@ -111,7 +111,7 @@ D = X.shape[1]
 rowsPerCluster = N/numberOfCluster
 gaussianComponents = 5
 
-initialTraining = []
+cluster_list = []
 dataSplits = numpy.vsplit(X, range(rowsPerCluster, N, rowsPerCluster))
 gmmList = []
 
@@ -120,10 +120,10 @@ for data in dataSplits:
     print 'Training GMM'
     gmm = GMM(n_components=gaussianComponents)
     gmmList.append(gmm)
-    initialTraining.append(Cluster(gmm, data))
+    cluster_list.append(Cluster(gmm, data))
     print 'Done!'
 
-for cluster in initialTraining:
+for cluster in cluster_list:
     cluster.train()
 
 NUMBER_INITIAL_SEGMENTATION_LOOPS = 2
