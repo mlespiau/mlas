@@ -26,7 +26,9 @@ class Cluster():
         return self.gmm
 
 class Segment():
-    def __init__(self, gmm, mostLikelyGmmClass, data):
+    def __init__(self, start, end, gmm, mostLikelyGmmClass, data):
+        self.start = start
+        self.end = end
         self.gmm = gmm
         self.mostLikelyGmmClass = mostLikelyGmmClass
         self.data = numpy.array(data)
@@ -83,7 +85,7 @@ class Resegmenter():
                 segment = self.reSegmentedClusters[mostLikelyGmmClass]
                 segment.addData(currentSegmentData)
             else:
-                segment = Segment(self.cluster_list[mostLikelyGmmClass].getGmm(), mostLikelyGmmClass, currentSegmentData)
+                segment = Segment(dataRange[i], dataRange[i+1], self.cluster_list[mostLikelyGmmClass].getGmm(), mostLikelyGmmClass, currentSegmentData)
                 self.reSegmentedClusters[mostLikelyGmmClass] = segment
         # for each gmm, append all the segments and retrain
         # hay que verificar si lo que esta haciendo es justar en cluster_data
