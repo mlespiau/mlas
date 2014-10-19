@@ -109,7 +109,7 @@ dataSplits = numpy.vsplit(X, range(rowsPerCluster, N, rowsPerCluster))
 # train a GMM in each cluster
 for data in dataSplits:
     print 'Training GMM'
-    gmm = GMM(n_components=gaussianComponents)
+    gmm = GMM(n_components=gaussianComponents, covariance_type='full')
     cluster_list.append(Cluster(gmm, data))
     print 'Done!'
 
@@ -153,16 +153,19 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
             w = numpy.ascontiguousarray(numpy.append(rationOne * clusterOne.getGmm().weights_, rationTwo * clusterTwo.getGmm().weights_))
             m = numpy.ascontiguousarray(numpy.append(clusterOne.getGmm().means_, clusterTwo.getGmm().means_))
             c = numpy.ascontiguousarray(numpy.append(clusterOne.getGmm().covars_, clusterTwo.getGmm().covars_))
-            newGmm = GMM(n_components=newNumberOfComponents)
+            newGmm = GMM(n_components=newNumberOfComponents, covariance_type='full')
             newGmm.weights_ = w
             newGmm.means_ = m
             newGmm.covars_ = c
             newGmm.fit(newClusterData)
-            # Esto podria ser fruta
-            newScore = newGmm.bic(newClusterData) - (clusterOne.bic() + clusterTwo.bic())
+            # This is an approximation for X Aguera. thesis p78
+            # lambda is not needed as #Mij = #Mi + #Mj
+            # FIXME: the algorithm is not converging and only stops when there is only one cluster :(
+            newScore = newGmm.bic(newClusterData) - clusterOne.bic() - clusterTwo.bic()
             print('newGmmScore: ' + str(newGmm.bic(newClusterData)))
             print('clusterOneScore: ' + str(clusterOne.bic()))
             print('clusterTwoScore: ' + str(clusterTwo.bic()))
+            print('final: ' + str(newScore))
             if (newScore > bestBicScore):
                 bestMergedGmm = newGmm
                 mergedTuple = (clusterOne, clusterTwo)
@@ -179,3 +182,4 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
             cluster_list.__delitem__(mergedTupleIndices[0])
             cluster_list.__delitem__(mergedTupleIndices[1])
         cluster_list.append(Cluster(bestMergedGmm, bestNewClusterData))
+print(len(cluster_list))
