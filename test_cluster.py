@@ -87,14 +87,6 @@ class Resegmenter():
             else:
                 segment = Segment(dataRange[i], dataRange[i+1], self.cluster_list[mostLikelyGmmClass].getGmm(), mostLikelyGmmClass, currentSegmentData)
                 self.reSegmentedClusters[mostLikelyGmmClass] = segment
-        # for each gmm, append all the segments and retrain
-        # hay que verificar si lo que esta haciendo es justar en cluster_data
-        # los datos de cada tipo p de cluster
-        # iter_bic_dict e iter_bic_list hay que ver para que se usan para
-        # entender mejor que son
-            # iter_bic_dict se usa solo para kl distance
-            # iter_bic_list se usa y es una lista de tuplas, gmm -> datos de ese cluster
-            # most_likely se devuelve en el resegmenter solo para devolverlo al final de cluter
         print(self.reSegmentedClusters)
         for clusterName in self.reSegmentedClusters:
             self.reSegmentedClusters[clusterName].trainGmm()
