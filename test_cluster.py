@@ -76,7 +76,6 @@ class Resegmenter():
             currentSegmentIndexes = range(dataRange[i], dataRange[i+1])
             currentSegmentScores = numpy.array(self.mostLikely[currentSegmentIndexes])
             # print(currentSegmentData)
-            # TODO: averiguar como funciona esto stats.mode
             mostLikelyGmmClass = int(stats.mode(currentSegmentScores)[0][0])
             # print(mostLikelyGmmClass)
             # print(self.X[currentSegmentIndexes,:])
