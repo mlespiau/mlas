@@ -183,4 +183,4 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
         else:
             cluster_list.__delitem__(mergedTupleIndices[0])
             cluster_list.__delitem__(mergedTupleIndices[1])
-        cluster_list[mergedTupleIndices[0]] = Cluster(bestMergedGmm, bestNewClusterData)
+        cluster_list.append(Cluster(bestMergedGmm, bestNewClusterData))
