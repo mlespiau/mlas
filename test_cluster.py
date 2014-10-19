@@ -5,7 +5,6 @@ from features import mfcc
 from scipy.io import wavfile
 # from scipy.signal import wiener
 from sklearn.mixture import GMM
-# TODO: averiguar como funciona esto
 import scipy.stats.mstats as stats
 
 # TODO: add wiener filtering to the signal!
@@ -29,6 +28,7 @@ class Segment():
     def __init__(self, start, end, gmm, mostLikelyGmmClass, data):
         self.start = start
         self.end = end
+        print 'Creating segment [' + str(start) + ':' + str(end) + ']. Class: ' + str(mostLikelyGmmClass)
         self.gmm = gmm
         self.mostLikelyGmmClass = mostLikelyGmmClass
         self.data = numpy.array(data)
@@ -159,8 +159,10 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
             newGmm.covars_ = c
             newGmm.fit(newClusterData)
             # Esto podria ser fruta
-            newScore = newGmm.bic(newClusterData) - clusterOne.bic() + clusterTwo.bic()
-            print(newScore)
+            newScore = newGmm.bic(newClusterData) - (clusterOne.bic() + clusterTwo.bic())
+            print('newGmmScore: ' + str(newGmm.bic(newClusterData)))
+            print('clusterOneScore: ' + str(clusterOne.bic()))
+            print('clusterTwoScore: ' + str(clusterTwo.bic()))
             if (newScore > bestBicScore):
                 bestMergedGmm = newGmm
                 mergedTuple = (clusterOne, clusterTwo)
