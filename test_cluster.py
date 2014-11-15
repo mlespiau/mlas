@@ -49,7 +49,7 @@ class Resegmenter():
             current_segment_data = self.X[current_segment_indexes,:]
             segment = Segment(data_range[i], data_range[i+1], current_segment_data)
             segment.set_most_likely_gmm_class(self.cluster_list[most_likely_gmm_class].get_name())
-            self.cluster_list[most_likely_gmm_class].addSegment(segment)
+            self.cluster_list[most_likely_gmm_class].add_segment(segment)
         new_cluster_list = []
         for cluster in self.cluster_list:
             if len(cluster.getSegments()) > 0:
@@ -188,7 +188,7 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
         print(mergedTupleIndices)
         new_cluster = Cluster(clusterNames.getNextName(), bestMergedGmm, bestNewSegments[0])
         for i in range(1, len(bestNewSegments)):
-            new_cluster.addSegment(bestNewSegments[i])
+            new_cluster.add_segment(bestNewSegments[i])
         if mergedTupleIndices[0] < mergedTupleIndices[1]:
             cluster_list.__delitem__(mergedTupleIndices[1])
             cluster_list.__delitem__(mergedTupleIndices[0])

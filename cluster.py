@@ -5,7 +5,7 @@ class Cluster():
         self.gmm = gmm
         self.name = name
         self.segments = []
-        self.addSegment(initialSegment)
+        self.add_segment(initialSegment)
 
     def trainGmm(self):
         # TODO: specify number of iterations in EM algorithm?
@@ -19,7 +19,7 @@ class Cluster():
     def reset_data(self):
         self.segments = []
 
-    def addSegment(self, segment):
+    def add_segment(self, segment):
         self.segments.append(segment)
 
     def getAllSegmentsData(self):
