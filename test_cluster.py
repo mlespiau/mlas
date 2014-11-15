@@ -48,7 +48,7 @@ class Resegmenter():
             # print(self.X[current_segment_indexes,:])
             current_segment_data = self.X[current_segment_indexes,:]
             segment = Segment(data_range[i], data_range[i+1], current_segment_data)
-            segment.set_most_likely_gmm_class(self.cluster_list[most_likely_gmm_class].getName())
+            segment.set_most_likely_gmm_class(self.cluster_list[most_likely_gmm_class].get_name())
             self.cluster_list[most_likely_gmm_class].addSegment(segment)
         new_cluster_list = []
         for cluster in self.cluster_list:
@@ -152,7 +152,7 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
         for j in range(i + 1, len(cluster_list)):
             clusterOne = cluster_list[i]
             clusterTwo = cluster_list[j]
-            print 'gmmOneClusterName: ' + str(clusterOne.getName()) + '. gmmTwoClusterName: ' + str(clusterTwo.getName())
+            print 'gmmOneClusterName: ' + str(clusterOne.get_name()) + '. gmmTwoClusterName: ' + str(clusterTwo.get_name())
             newScore = 0.0
             newClusterData = numpy.concatenate((clusterOne.getAllSegmentsData(), clusterTwo.getAllSegmentsData()))
             oneNumberOfComponents = clusterOne.get_gmm().get_params()['n_components']

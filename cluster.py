@@ -40,7 +40,7 @@ class Cluster():
     def score(self):
         return self.gmm.score(self.getAllSegmentsData())
 
-    def getName(self):
+    def get_name(self):
         return self.name
 
 class Segment():
