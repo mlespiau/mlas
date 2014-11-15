@@ -54,7 +54,7 @@ class Segment():
     def getData(self):
         return self.data
 
-    def setMostLikelyGmmClass(self, gmmClass):
+    def set_most_likely_gmm_class(self, gmmClass):
         self.most_likely_gmm_class = gmmClass
 
     def getStart(self):
