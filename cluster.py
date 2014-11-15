@@ -16,7 +16,7 @@ class Cluster():
     def get_gmm(self):
         return self.gmm
 
-    def resetData(self):
+    def reset_data(self):
         self.segments = []
 
     def addSegment(self, segment):

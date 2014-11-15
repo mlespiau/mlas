@@ -26,10 +26,10 @@ class Resegmenter():
 
     def execute(self):
         likelihoods = self.cluster_list[0].get_gmm().score(self.X)
-        self.cluster_list[0].resetData()
+        self.cluster_list[0].reset_data()
         for cluster in self.cluster_list[1:]:
             likelihoods = numpy.column_stack((likelihoods, cluster.get_gmm().score(self.X)))
-            cluster.resetData()
+            cluster.reset_data()
         if self.number_of_clusters == 1:
             self.mostLikely = numpy.zeros(len(self.X))
         else:
