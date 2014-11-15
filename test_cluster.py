@@ -53,7 +53,7 @@ class Resegmenter():
         new_cluster_list = []
         for cluster in self.cluster_list:
             if len(cluster.get_segments()) > 0:
-                cluster.trainGmm()
+                cluster.train_gmm()
                 new_cluster_list.append(cluster)
         return new_cluster_list
 
@@ -125,7 +125,7 @@ for data in dataSplits:
     print 'Done!'
 
 for cluster in cluster_list:
-    cluster.trainGmm()
+    cluster.train_gmm()
 
 NUMBER_INITIAL_SEGMENTATION_LOOPS = 2
 NUMBER_SEGMENTATION_LOOPS = 3

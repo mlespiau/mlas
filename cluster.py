@@ -7,7 +7,7 @@ class Cluster():
         self.segments = []
         self.add_segment(initialSegment)
 
-    def trainGmm(self):
+    def train_gmm(self):
         # TODO: specify number of iterations in EM algorithm?
         # TODO: is this using EM?
         # TODO: relevant code: max_em_iters=em_iters in gmm training
