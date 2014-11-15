@@ -28,7 +28,7 @@ class Cluster():
             numpy.concatenate((data, self.segments[i].getData()))
         return data
 
-    def getSegments(self):
+    def get_segments(self):
         return self.segments
 
     def bic(self):

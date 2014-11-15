@@ -52,7 +52,7 @@ class Resegmenter():
             self.cluster_list[most_likely_gmm_class].add_segment(segment)
         new_cluster_list = []
         for cluster in self.cluster_list:
-            if len(cluster.getSegments()) > 0:
+            if len(cluster.get_segments()) > 0:
                 cluster.trainGmm()
                 new_cluster_list.append(cluster)
         return new_cluster_list
@@ -61,7 +61,7 @@ def print_cluster_list(clusters):
     bounds = []
     for cluster in clusters:
         print 'Cluster: ' + str(cluster.getName())
-        for segment in cluster.getSegments():
+        for segment in cluster.get_segments():
             # bounds.append(segment.getStart())
             print 'Segment: start: ' + str(segment.getStart()) + '. end: ' + str(segment.getEnd())
 
@@ -183,7 +183,7 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
                 mergedTuple = (clusterOne, clusterTwo)
                 mergedTupleIndices = (i, j)
                 bestBicScore = newScore
-                bestNewSegments = clusterOne.getSegments() + clusterTwo.getSegments()
+                bestNewSegments = clusterOne.get_segments() + clusterTwo.get_segments()
     if bestBicScore > 0.0:
         print(mergedTupleIndices)
         new_cluster = Cluster(clusterNames.getNextName(), bestMergedGmm, bestNewSegments[0])
