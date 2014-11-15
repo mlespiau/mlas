@@ -22,7 +22,7 @@ class Resegmenter():
         self.N = N
         self.cluster_list = cluster_list
         self.number_of_clusters = len(self.cluster_list)
-        self.intervalSize = 150
+        self.interval_size = 150
 
     def execute(self):
         likelihoods = self.cluster_list[0].getGmm().score(self.X)
@@ -36,7 +36,7 @@ class Resegmenter():
             self.mostLikely = likelihoods.argmax(axis=1)
         # Across 250 frames of observations
         # Vote on wich cluster they should be associated with
-        dataRange = range(0, self.N, self.intervalSize)
+        dataRange = range(0, self.N, self.interval_size)
         if dataRange[-1] < self.N:
             dataRange.append(self.N)
         for i, v in enumerate(dataRange[0:len(dataRange)-1]):
