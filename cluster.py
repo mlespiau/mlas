@@ -13,7 +13,7 @@ class Cluster():
         # TODO: relevant code: max_em_iters=em_iters in gmm training
         self.gmm.fit(self.getAllSegmentsData())
 
-    def getGmm(self):
+    def get_gmm(self):
         return self.gmm
 
     def resetData(self):

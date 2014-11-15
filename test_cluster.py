@@ -25,10 +25,10 @@ class Resegmenter():
         self.interval_size = 150
 
     def execute(self):
-        likelihoods = self.cluster_list[0].getGmm().score(self.X)
+        likelihoods = self.cluster_list[0].get_gmm().score(self.X)
         self.cluster_list[0].resetData()
         for cluster in self.cluster_list[1:]:
-            likelihoods = numpy.column_stack((likelihoods, cluster.getGmm().score(self.X)))
+            likelihoods = numpy.column_stack((likelihoods, cluster.get_gmm().score(self.X)))
             cluster.resetData()
         if self.number_of_clusters == 1:
             self.mostLikely = numpy.zeros(len(self.X))
@@ -74,10 +74,25 @@ class ClusterNames():
         self.index = self.index + 1
         return name
 
+def vad(signal,samplerate=16000,winlen=0.025,winstep=0.01,numcep=13,
+          nfilt=26,nfft=512,lowfreq=0,highfreq=None,preemph=0.97,ceplifter=22,appendEnergy=True):
+    feat,energy = fbank(signal,samplerate,winlen,winstep,nfilt,nfft,lowfreq,highfreq,preemph)
+    feat = numpy.log(feat)
+    feat = dct(feat, type=2, axis=1, norm='ortho')[:,:numcep]
+    feat = lifter(feat,ceplifter)
+    if appendEnergy: feat[:,0] = numpy.log(energy) # replace first cepstral coefficient with log of frame energy
+    return feat
+
 number_of_clusters = 8
 
 # estoy usando
 X = mfcc(signal, samplerate=rate)
+voice_activity_frames = vad(signal, samplerate=rate)
+
+frameVars = np.var(frames, 1)
+reducedFrames = frames[np.where(frameVars > signal)]
+return reducedFrames
+
 N = X.shape[0]
 D = X.shape[1]
 # print(N)
@@ -140,14 +155,14 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
             print 'gmmOneClusterName: ' + str(clusterOne.getName()) + '. gmmTwoClusterName: ' + str(clusterTwo.getName())
             newScore = 0.0
             newClusterData = numpy.concatenate((clusterOne.getAllSegmentsData(), clusterTwo.getAllSegmentsData()))
-            oneNumberOfComponents = clusterOne.getGmm().get_params()['n_components']
-            twoNumberOfComponents = clusterTwo.getGmm().get_params()['n_components']
+            oneNumberOfComponents = clusterOne.get_gmm().get_params()['n_components']
+            twoNumberOfComponents = clusterTwo.get_gmm().get_params()['n_components']
             newNumberOfComponents = oneNumberOfComponents + twoNumberOfComponents
 #             rationOne = float(oneNumberOfComponents) / float(newNumberOfComponents)
 #             rationTwo = float(twoNumberOfComponents) / float(newNumberOfComponents)
-#             w = numpy.ascontiguousarray(numpy.append(rationOne * clusterOne.getGmm().weights_, rationTwo * clusterTwo.getGmm().weights_))
-#             m = numpy.ascontiguousarray(numpy.append(clusterOne.getGmm().means_, clusterTwo.getGmm().means_))
-#             c = numpy.ascontiguousarray(numpy.append(clusterOne.getGmm().covars_, clusterTwo.getGmm().covars_))
+#             w = numpy.ascontiguousarray(numpy.append(rationOne * clusterOne.get_gmm().weights_, rationTwo * clusterTwo.get_gmm().weights_))
+#             m = numpy.ascontiguousarray(numpy.append(clusterOne.get_gmm().means_, clusterTwo.get_gmm().means_))
+#             c = numpy.ascontiguousarray(numpy.append(clusterOne.get_gmm().covars_, clusterTwo.get_gmm().covars_))
             newGmm = GMM(n_components=newNumberOfComponents, covariance_type='full')
 #             newGmm.weights_ = w
 #             newGmm.means_ = m
