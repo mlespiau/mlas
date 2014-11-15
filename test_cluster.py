@@ -42,12 +42,12 @@ class Resegmenter():
         for i, v in enumerate(data_range[0:len(data_range)-1]):
             current_segment_indexes = range(data_range[i], data_range[i+1])
             current_segment_scores = numpy.array(self.most_likely[current_segment_indexes])
-            # print(currentSegmentData)
+            # print(current_segment_data)
             most_likely_gmm_class = int(stats.mode(current_segment_scores)[0][0])
             print(most_likely_gmm_class)
             # print(self.X[current_segment_indexes,:])
-            currentSegmentData = self.X[current_segment_indexes,:]
-            segment = Segment(data_range[i], data_range[i+1], currentSegmentData)
+            current_segment_data = self.X[current_segment_indexes,:]
+            segment = Segment(data_range[i], data_range[i+1], current_segment_data)
             segment.setMostLikelyGmmClass(self.cluster_list[most_likely_gmm_class].getName())
             self.cluster_list[most_likely_gmm_class].addSegment(segment)
         new_cluster_list = []
