@@ -31,9 +31,9 @@ class Resegmenter():
             likelihoods = numpy.column_stack((likelihoods, cluster.get_gmm().score(self.X)))
             cluster.reset_data()
         if self.number_of_clusters == 1:
-            self.mostLikely = numpy.zeros(len(self.X))
+            self.most_likely = numpy.zeros(len(self.X))
         else:
-            self.mostLikely = likelihoods.argmax(axis=1)
+            self.most_likely = likelihoods.argmax(axis=1)
         # Across 250 frames of observations
         # Vote on wich cluster they should be associated with
         dataRange = range(0, self.N, self.interval_size)
@@ -41,15 +41,15 @@ class Resegmenter():
             dataRange.append(self.N)
         for i, v in enumerate(dataRange[0:len(dataRange)-1]):
             currentSegmentIndexes = range(dataRange[i], dataRange[i+1])
-            currentSegmentScores = numpy.array(self.mostLikely[currentSegmentIndexes])
+            currentSegmentScores = numpy.array(self.most_likely[currentSegmentIndexes])
             # print(currentSegmentData)
-            mostLikelyGmmClass = int(stats.mode(currentSegmentScores)[0][0])
-            print(mostLikelyGmmClass)
+            most_likelyGmmClass = int(stats.mode(currentSegmentScores)[0][0])
+            print(most_likelyGmmClass)
             # print(self.X[currentSegmentIndexes,:])
             currentSegmentData = self.X[currentSegmentIndexes,:]
             segment = Segment(dataRange[i], dataRange[i+1], currentSegmentData)
-            segment.setMostLikelyGmmClass(self.cluster_list[mostLikelyGmmClass].getName())
-            self.cluster_list[mostLikelyGmmClass].addSegment(segment)
+            segment.setMostLikelyGmmClass(self.cluster_list[most_likelyGmmClass].getName())
+            self.cluster_list[most_likelyGmmClass].addSegment(segment)
         new_cluster_list = []
         for cluster in self.cluster_list:
             if len(cluster.getSegments()) > 0:
