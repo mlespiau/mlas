@@ -47,15 +47,15 @@ class Segment():
     def __init__(self, start, end, data):
         self.start = start
         self.end = end
-        self.most_likelyGmmClass = None
-        print 'Creating segment [' + str(start) + ':' + str(end) + ']. Class: ' + str(self.most_likelyGmmClass)
+        self.most_likely_gmm_class = None
+        print 'Creating segment [' + str(start) + ':' + str(end) + ']. Class: ' + str(self.most_likely_gmm_class)
         self.data = numpy.array(data)
 
     def getData(self):
         return self.data
 
     def setMostLikelyGmmClass(self, gmmClass):
-        self.most_likelyGmmClass = gmmClass
+        self.most_likely_gmm_class = gmmClass
 
     def getStart(self):
         return self.start
