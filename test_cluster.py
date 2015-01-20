@@ -111,7 +111,7 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
             clusterTwo = cluster_list[j]
             print 'gmmOneClusterName: ' + str(clusterOne.get_name()) + '. gmmTwoClusterName: ' + str(clusterTwo.get_name())
             newScore = 0.0
-            newClusterData = numpy.concatenate((clusterOne.getAllSegmentsData(), clusterTwo.getAllSegmentsData()))
+            newClusterData = numpy.concatenate((clusterOne.get_all_segments_data(), clusterTwo.get_all_segments_data()))
             oneNumberOfComponents = clusterOne.get_gmm().get_params()['n_components']
             twoNumberOfComponents = clusterTwo.get_gmm().get_params()['n_components']
             newNumberOfComponents = oneNumberOfComponents + twoNumberOfComponents

@@ -12,7 +12,7 @@ class Cluster():
         # TODO: specify number of iterations in EM algorithm?
         # TODO: is this using EM?
         # TODO: relevant code: max_em_iters=em_iters in gmm training
-        self.gmm.fit(self.getAllSegmentsData())
+        self.gmm.fit(self.get_all_segments_data())
 
     def get_gmm(self):
         return self.gmm
@@ -23,7 +23,7 @@ class Cluster():
     def add_segment(self, segment):
         self.segments.append(segment)
 
-    def getAllSegmentsData(self):
+    def get_all_segments_data(self):
         data = numpy.array(self.segments[0].get_data())
         for i in range(1, len(self.segments)):
             numpy.concatenate((data, self.segments[i].get_data()))
@@ -33,13 +33,13 @@ class Cluster():
         return self.segments
 
     def bic(self):
-        return self.gmm.bic(self.getAllSegmentsData())
+        return self.gmm.bic(self.get_all_segments_data())
 
     def bic2(self):
-        return (-2 * self.gmm.score(self.getAllSegmentsData()).sum() - self.gmm._n_parameters() * numpy.log(self.getAllSegmentsData().shape[0]))
+        return (-2 * self.gmm.score(self.get_all_segments_data()).sum() - self.gmm._n_parameters() * numpy.log(self.get_all_segments_data().shape[0]))
 
     def score(self):
-        return self.gmm.score(self.getAllSegmentsData())
+        return self.gmm.score(self.get_all_segments_data())
 
     def get_name(self):
         return self.name
