@@ -58,10 +58,10 @@ class Segment():
     def set_most_likely_gmm_class(self, gmmClass):
         self.most_likely_gmm_class = gmmClass
 
-    def getStart(self):
+    def get_start(self):
         return self.start
 
-    def getEnd(self):
+    def get_end(self):
         return self.end
 
 class Resegmenter():

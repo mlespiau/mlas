@@ -15,15 +15,13 @@ from cluster import Cluster, Segment, Resegmenter
 # TODO: add wiener filtering to the signal!
 (rate,signal) = wavfile.read("corpus/telam-51aniosrayuela_part1.wav")
 
-
-
 def print_cluster_list(clusters):
     bounds = []
     for cluster in clusters:
         print 'Cluster: ' + str(cluster.get_name())
         for segment in cluster.get_segments():
-            # bounds.append(segment.getStart())
-            print 'Segment: start: ' + str(segment.getStart()) + '. end: ' + str(segment.getEnd())
+            # bounds.append(segment.get_start())
+            print 'Segment: start: ' + str(segment.get_start()) + '. end: ' + str(segment.get_end())
 
 class ClusterNames():
     def __init__(self):
