@@ -23,9 +23,9 @@ class Cluster():
         self.segments.append(segment)
 
     def getAllSegmentsData(self):
-        data = numpy.array(self.segments[0].getData())
+        data = numpy.array(self.segments[0].get_data())
         for i in range(1, len(self.segments)):
-            numpy.concatenate((data, self.segments[i].getData()))
+            numpy.concatenate((data, self.segments[i].get_data()))
         return data
 
     def get_segments(self):
@@ -51,7 +51,7 @@ class Segment():
         print 'Creating segment [' + str(start) + ':' + str(end) + ']. Class: ' + str(self.most_likely_gmm_class)
         self.data = numpy.array(data)
 
-    def getData(self):
+    def get_data(self):
         return self.data
 
     def set_most_likely_gmm_class(self, gmmClass):
