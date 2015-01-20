@@ -5,7 +5,6 @@ from features import mfcc
 from scipy.io import wavfile
 # from scipy.signal import wiener
 from sklearn.mixture import GMM
-import scipy.stats.mstats as stats
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import matplotlib
