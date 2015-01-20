@@ -87,11 +87,11 @@ number_of_clusters = 8
 
 # estoy usando
 X = mfcc(signal, samplerate=rate)
-voice_activity_frames = vad(signal, samplerate=rate)
+# voice_activity_frames = vad(signal, samplerate=rate)
 
-frameVars = np.var(frames, 1)
-reducedFrames = frames[np.where(frameVars > signal)]
-return reducedFrames
+# frameVars = np.var(frames, 1)
+# reducedFrames = frames[np.where(frameVars > signal)]
+# return reducedFrames
 
 N = X.shape[0]
 D = X.shape[1]
