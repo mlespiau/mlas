@@ -20,7 +20,7 @@ from cluster import Cluster, Segment, Resegmenter
 def print_cluster_list(clusters):
     bounds = []
     for cluster in clusters:
-        print 'Cluster: ' + str(cluster.getName())
+        print 'Cluster: ' + str(cluster.get_name())
         for segment in cluster.get_segments():
             # bounds.append(segment.getStart())
             print 'Segment: start: ' + str(segment.getStart()) + '. end: ' + str(segment.getEnd())
