@@ -45,18 +45,18 @@ class Cluster():
         return self.name
 
 class Segment():
-    def __init__(self, start, end, data):
+    def __init__(self, start, end, data, most_likely_gmm_class):
         self.start = start
         self.end = end
-        self.most_likely_gmm_class = None
+        if most_likely_gmm_class:
+            self.most_likely_gmm_class = most_likely_gmm_class
+        else:
+            raise Exception("noGmmClassForSegment")
         print 'Creating segment [' + str(start) + ':' + str(end) + ']. Class: ' + str(self.most_likely_gmm_class)
         self.data = numpy.array(data)
 
     def get_data(self):
         return self.data
-
-    def set_most_likely_gmm_class(self, gmmClass):
-        self.most_likely_gmm_class = gmmClass
 
     def get_start(self):
         return self.start
@@ -95,8 +95,12 @@ class Resegmenter():
             print(most_likely_gmm_class)
             # print(self.X[current_segment_indexes,:])
             current_segment_data = self.X[current_segment_indexes,:]
-            segment = Segment(data_range[i], data_range[i+1], current_segment_data)
-            segment.set_most_likely_gmm_class(self.cluster_list[most_likely_gmm_class].get_name())
+            segment = Segment(
+                data_range[i],
+                data_range[i+1],
+                current_segment_data,
+                self.cluster_list[most_likely_gmm_class].get_name()
+            )
             self.cluster_list[most_likely_gmm_class].add_segment(segment)
         new_cluster_list = []
         for cluster in self.cluster_list:

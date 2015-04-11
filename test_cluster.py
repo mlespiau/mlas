@@ -77,7 +77,7 @@ for data in dataSplits:
     clusterName = clusterNames.get_next_name()
     print 'Training GMM ' + clusterName
     gmm = GMM(n_components=gaussian_components, covariance_type='full')
-    cluster_list.append(Cluster(clusterName, gmm, Segment(j, j + rows_per_cluster, data)))
+    cluster_list.append(Cluster(clusterName, gmm, Segment(j, j + rows_per_cluster, data, clusterName)))
     j = j + rows_per_cluster
     print 'Done!'
 
