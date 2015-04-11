@@ -26,7 +26,7 @@ class ClusterNames():
     def __init__(self):
         self.index = 65
 
-    def getNextName(self):
+    def get_next_name(self):
         name = chr(self.index)
         self.index = self.index + 1
         return name
@@ -74,7 +74,7 @@ dataSplits = numpy.vsplit(X, range(rows_per_cluster, N, rows_per_cluster))
 j = 0
 # train a GMM in each cluster
 for data in dataSplits:
-    clusterName = clusterNames.getNextName()
+    clusterName = clusterNames.get_next_name()
     print 'Training GMM ' + clusterName
     gmm = GMM(n_components=gaussian_components, covariance_type='full')
     cluster_list.append(Cluster(clusterName, gmm, Segment(j, j + rows_per_cluster, data)))
@@ -143,7 +143,7 @@ while(bestBicScore > 0 and len(cluster_list) > 1):
                 bestNewSegments = clusterOne.get_segments() + clusterTwo.get_segments()
     if bestBicScore > 0.0:
         print(mergedTupleIndices)
-        new_cluster = Cluster(clusterNames.getNextName(), bestMergedGmm, bestNewSegments[0])
+        new_cluster = Cluster(clusterNames.get_next_name(), bestMergedGmm, bestNewSegments[0])
         for i in range(1, len(bestNewSegments)):
             new_cluster.add_segment(bestNewSegments[i])
         if mergedTupleIndices[0] < mergedTupleIndices[1]:
