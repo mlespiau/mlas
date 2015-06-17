@@ -12,7 +12,7 @@ from pylab import *
 from cluster import Cluster, Segment, Resegmenter
 
 # TODO: add wiener filtering to the signal!
-(rate,signal) = wavfile.read("corpus/telam-51aniosrayuela_part1.wav")
+(rate,signal) = wavfile.read("corpus/marian-campos-electroestaticos-mono.wav")
 
 def print_cluster_list(clusters):
     bounds = []
@@ -31,45 +31,18 @@ class ClusterNames():
         self.index = self.index + 1
         return name
 
-def vad(signal,samplerate=16000,winlen=0.025,winstep=0.01,numcep=13,
-          nfilt=26,nfft=512,lowfreq=0,highfreq=None,preemph=0.97,ceplifter=22,appendEnergy=True):
-    feat,energy = fbank(signal,samplerate,winlen,winstep,nfilt,nfft,lowfreq,highfreq,preemph)
-    feat = numpy.log(feat)
-    feat = dct(feat, type=2, axis=1, norm='ortho')[:,:numcep]
-    feat = lifter(feat,ceplifter)
-    if appendEnergy: feat[:,0] = numpy.log(energy) # replace first cepstral coefficient with log of frame energy
-    return feat
 
 number_of_clusters = 8
-
-# estoy usando
 X = mfcc(signal, samplerate=rate)
-# voice_activity_frames = vad(signal, samplerate=rate)
-
-# frameVars = np.var(frames, 1)
-# reducedFrames = frames[np.where(frameVars > signal)]
-# return reducedFrames
-
 N = X.shape[0]
 D = X.shape[1]
-# print(N)
-# pca = PCA(n_components=3)
-# pca.fit(X)
-# pcaData = pca.transform(X)
-# print(pcaData[1:10,0])
-# print(pcaData[1:10,1])
-# # plt.plot(pcaData[:,0], pcaData[:,1], pcaData[:,2],, 'o')
-# from mpl_toolkits.mplot3d import Axes3D
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# ax.scatter(pcaData[:,0], pcaData[:,1], pcaData[:,2])
-# plt.show()
 
 # divide the features into k clusters
 rows_per_cluster = N/number_of_clusters
 gaussian_components = 5
 clusterNames = ClusterNames()
 cluster_list = []
+
 dataSplits = numpy.vsplit(X, range(rows_per_cluster, N, rows_per_cluster))
 j = 0
 # train a GMM in each cluster
